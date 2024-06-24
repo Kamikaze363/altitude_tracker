@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'StopIt',
+      title: 'Altitude Tracker',
       theme: ThemeData(
         textTheme: AppFonts.poppins,
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),

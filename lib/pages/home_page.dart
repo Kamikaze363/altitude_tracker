@@ -1,4 +1,5 @@
 import 'package:altitude_tracker/globals.dart';
+import 'package:altitude_tracker/pages/profile_page.dart';
 import 'package:altitude_tracker/services/altitude_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -6,7 +7,6 @@ import 'package:flutter_barometer/flutter_barometer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
-
   final String title;
 
   @override
@@ -15,9 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final double customPadding = 16.0;
-
-  double? _altitude;
-  bool _isLoading = true;
+  String? _altitude;
   double _pressure = 0.0;
 
   final List<StreamSubscription<dynamic>> _streamSubscriptions = <StreamSubscription<dynamic>>[];
@@ -38,11 +36,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _calculateAltitude(double pressure) {
-    double altitude = AltitudeCalculator.calculateAltitude(pressure);
+    String altitude = AltitudeService.altitudeText(AltitudeService.calculateAltitude(pressure));
 
     setState(() {
       _altitude = altitude;
-      _isLoading = false;
     });
   }
 
@@ -58,33 +55,54 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: AppColors.primaryColor,
         title: Text(
           widget.title,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
+            color: AppColors.accentColor
           ),
         ),
+        actions: [
+          IconButton(
+            tooltip: "Go to achievements",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfilePage(title: AppTitle.title),
+                ),
+              );
+            },
+            icon: const Icon(Icons.emoji_events, color: AppColors.accentColor, size: 40,)
+          )
+
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(customPadding),
           child: Column(
             children: [
-              _isLoading
-                  ? const CircularProgressIndicator()
-                  : Column(
-                children: [
-                  Text(
-                    'Pressure: ${_pressure.toStringAsFixed(2)} hPa',
-                    style: AppStyles.labelStyle(),
-                  ),
-                  Text(
-                    'Approx. Altitude: ${_altitude?.toStringAsFixed(2)} meters',
-                    style: AppStyles.labelStyle(),
-                  ),
-                ],
+              SingleCardStats(
+                  headText: "Approx. Altitude:",
+                  statsText: _altitude.toString(),
+                  widthCard: ScreenSizes.width(context)*.9,
+                  colorCard: AppColors.primaryColor,
+                  titleStyle: AppStyles.labelStyleWhite(),
+                  statsStyle: AppStyles.headerStyleWhite()
               ),
+
+              const SizedBox(height: 20),
+
+              SingleCardStats(
+                  headText: "You are at about the \nsame altitude as:",
+                  statsText: AltitudeService.showLandmark(AltitudeService.calculateAltitude(_pressure)),
+                  widthCard: ScreenSizes.width(context)*.9,
+                  colorCard: AppColors.primaryColor,
+                  titleStyle: AppStyles.labelStyleWhite(),
+                  statsStyle: AppStyles.labelStyleWhite()
+              )
             ],
           ),
         ),

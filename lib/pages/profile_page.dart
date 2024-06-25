@@ -34,6 +34,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
@@ -45,29 +47,59 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(customPadding),
-          child: Column(
-            children: [
-              SingleCardStats(
-            headText: "Highest Achieved Altitude:",
-            statsText: "${_highestAltitude} meters",
-            widthCard: ScreenSizes.width(context) * 0.9,
-            colorCard: AppColors.primaryColor,
-            titleStyle: AppStyles.labelStyleWhite(),
-            statsStyle: AppStyles.headerStyleWhite(),
-          ),
-          const SizedBox(height: 20),
-          SingleCardStats(
-            headText: "Lowest Achieved Altitude:",
-            statsText: "${_lowestAltitude} meters",
-            widthCard: ScreenSizes.width(context) * 0.9,
-            colorCard: AppColors.primaryColor,
-            titleStyle: AppStyles.labelStyleWhite(),
-            statsStyle: AppStyles.headerStyleWhite(),
-              )
-            ],
-          ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return isLandscape ? buildLandscapeView() : buildPortraitView();
+            },
+          )
         ),
       ),
+    );
+  }
+
+  Widget buildPortraitView() {
+    double witdhMultiplier = .9;
+    return Column(
+      children: [
+        highScore(witdhMultiplier),
+        const SizedBox(height: 20),
+        lowScore(witdhMultiplier)
+      ],
+    );
+  }
+
+  Widget buildLandscapeView() {
+    double witdhMultiplier = .45;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        highScore(witdhMultiplier),
+        SizedBox(width: ScreenSizes.width(context) * .03 ,),
+        lowScore(witdhMultiplier)
+      ],
+    );
+  }
+
+  Widget highScore(double witdhMultiplier){
+    return   CardWidget(
+      titleText: "Highest Achieved Altitude:",
+      infoText: "$_highestAltitude meters",
+      cardWidth: ScreenSizes.width(context) * witdhMultiplier,
+      cardColor: AppColors.primaryColor,
+      titleStyle: AppStyles.labelStyleWhite(),
+      infoStyle: AppStyles.headerStyleWhite(),
+    );
+  }
+
+  Widget lowScore(double witdhMultiplier){
+    return CardWidget(
+      titleText: "Lowest Achieved Altitude:",
+      infoText: "$_lowestAltitude meters",
+      cardWidth: ScreenSizes.width(context) * witdhMultiplier,
+      cardColor: AppColors.primaryColor,
+      titleStyle: AppStyles.labelStyleWhite(),
+      infoStyle: AppStyles.headerStyleWhite(),
     );
   }
 }

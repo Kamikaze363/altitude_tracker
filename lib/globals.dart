@@ -46,47 +46,45 @@ class ScreenSizes {
   static double width(BuildContext context) {
     return MediaQuery.of(context).size.width;
   }
-
   static double height(BuildContext context) {
     return MediaQuery.of(context).size.height;
   }
 }
 
-class SingleCardStats extends StatelessWidget {
-  final String headText;
-  final String statsText;
-  final double widthCard;
-  final Color colorCard;
+class CardWidget extends StatelessWidget {
+  final String titleText;
+  final String infoText;
+  final double cardWidth;
+  final Color cardColor;
   final TextStyle titleStyle;
-  final TextStyle statsStyle;
+  final TextStyle infoStyle;
 
-  const SingleCardStats(
-      {super.key,
-        required this.headText,
-        required this.statsText,
-        required this.widthCard,
-        required this.colorCard,
-        required this.titleStyle,
-        required this.statsStyle
-      });
+  const CardWidget(
+    {super.key,
+      required this.titleText,
+      required this.infoText,
+      required this.cardWidth,
+      required this.cardColor,
+      required this.titleStyle,
+      required this.infoStyle
+    });
 
   @override
   Widget build(BuildContext context) {
     const double paddingCard = 18.0;
 
     return Container(
-      width: widthCard,
+      width: cardWidth,
       // height: 40,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), color: colorCard),
-
+        borderRadius: BorderRadius.circular(20), color: cardColor),
       child: Column(
         children: [
           Container(
             padding: const EdgeInsets.all(paddingCard),
             alignment: Alignment.centerLeft,
             child: Text(
-              headText,
+              titleText,
               textAlign: TextAlign.end,
               style: titleStyle,
             ),
@@ -94,7 +92,7 @@ class SingleCardStats extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(paddingCard),
             alignment: Alignment.centerRight,
-            child: Text(statsText, textAlign: TextAlign.start, style: statsStyle),
+            child: Text(infoText, textAlign: TextAlign.start, style: infoStyle),
           )
         ],
       ),

@@ -3,6 +3,14 @@ import 'package:flutter/material.dart';
 
 import 'globals.dart';
 
+//TODO: Add responsiveness
+//TODO: Clean up code
+//TODO: Add login
+//TODO: move locations back to JSON file
+//TODO: Do an integration test
+//TODO: Write documentation / paper
+//TODO: Make demo video / test video
+
 void main() {
   runApp(const MyApp());
 }

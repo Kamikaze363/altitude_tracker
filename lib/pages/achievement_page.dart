@@ -23,6 +23,7 @@ class _AchievementPageState extends State<AchievementPage> {
     fetchHighScores();
   }
 
+  //Fetches scores from shared preferences
   Future<void> fetchHighScores() async {
     Map<String, int> highScores = await AltitudeService.fetchHighScores();
     setState(() {
@@ -61,13 +62,15 @@ class _AchievementPageState extends State<AchievementPage> {
             label: "Achievements"),
         ],
       ),
+
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: Text(
           widget.title,
-          style: AppStyles.labelStyleWhite(),
+          style: TextStyles.labelStyleWhite(),
         ),
       ),
+
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(customPadding),
@@ -81,6 +84,7 @@ class _AchievementPageState extends State<AchievementPage> {
     );
   }
 
+  //Widget that dictates portrait layout
   Widget buildPortraitView() {
     double witdhMultiplier = .9;
     return Column(
@@ -92,6 +96,7 @@ class _AchievementPageState extends State<AchievementPage> {
     );
   }
 
+  //Widget that dictates landscape layout
   Widget buildLandscapeView() {
     double witdhMultiplier = .45;
     return Row(
@@ -99,31 +104,33 @@ class _AchievementPageState extends State<AchievementPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         highScore(witdhMultiplier),
-        SizedBox(width: ScreenSizes.width(context) * .03 ,),
+        SizedBox(width: ScreenDimensions.width(context) * .03 ,),
         lowScore(witdhMultiplier)
       ],
     );
   }
 
+  // Widget that displays highscore
   Widget highScore(double witdhMultiplier){
     return   CardWidget(
       titleText: "Highest Achieved Altitude:",
       infoText: "$_highestAltitude meters",
-      cardWidth: ScreenSizes.width(context) * witdhMultiplier,
+      cardWidth: ScreenDimensions.width(context) * witdhMultiplier,
       cardColor: AppColors.primaryColor,
-      titleStyle: AppStyles.labelStyleWhite(),
-      infoStyle: AppStyles.headerStyleWhite(),
+      titleStyle: TextStyles.labelStyleWhite(),
+      infoStyle: TextStyles.headerStyleWhite(),
     );
   }
 
+  // Widget that displays lowscore
   Widget lowScore(double witdhMultiplier){
     return CardWidget(
       titleText: "Lowest Achieved Altitude:",
       infoText: "$_lowestAltitude meters",
-      cardWidth: ScreenSizes.width(context) * witdhMultiplier,
+      cardWidth: ScreenDimensions.width(context) * witdhMultiplier,
       cardColor: AppColors.primaryColor,
-      titleStyle: AppStyles.labelStyleWhite(),
-      infoStyle: AppStyles.headerStyleWhite(),
+      titleStyle: TextStyles.labelStyleWhite(),
+      infoStyle: TextStyles.headerStyleWhite(),
     );
   }
 }

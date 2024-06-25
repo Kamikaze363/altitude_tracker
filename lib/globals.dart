@@ -11,24 +11,25 @@ const pages = [
 
 int currentPageIndex = 0;
 
-
+//Custom App Colors
 class AppColors {
   static const Color primaryColor = Color(0xFF2A5DFF);
-  static const Color secondaryColor = Color(0xFF70D5FF);
   static const Color accentColor = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
 }
 
+//Global font used in app
 class AppFonts {
   static final TextTheme poppins = GoogleFonts.poppinsTextTheme();
 }
 
+//Title used on all screens
 class AppTitle {
   static const String title = "Altitude Tracker";
 }
 
-class AppStyles {
-
+//Custom text styles used in app
+class TextStyles {
   static TextStyle labelStyle() {
     return const TextStyle(
       fontWeight: FontWeight.bold,
@@ -42,7 +43,6 @@ class AppStyles {
       color: AppColors.accentColor
     );
   }
-
   static TextStyle headerStyle() {
     return const TextStyle(fontSize: 45);
   }
@@ -51,7 +51,8 @@ class AppStyles {
   }
 }
 
-class ScreenSizes {
+//Used to get screen dimensions for responsive widget sizing
+class ScreenDimensions {
   static double width(BuildContext context) {
     return MediaQuery.of(context).size.width;
   }
@@ -60,6 +61,8 @@ class ScreenSizes {
   }
 }
 
+// Custom CardWidget used throughout app
+// Source / credit: my IPMEDT4 project (can be found in my GitHub pins)
 class CardWidget extends StatelessWidget {
   final String titleText;
   final String infoText;

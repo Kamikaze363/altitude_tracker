@@ -1,21 +1,15 @@
-import 'dart:convert';
 import 'dart:math';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AltitudeService {
+  //Atmospheric pressure at sea level in hPa
   static const double seaLevelPressure = 1013.25;
+
+  //Shared Preferences keys used for highest/lowest achieved altitude
   static const String _keyHighestAltitude = 'highest_altitude';
   static const String _keyLowestAltitude = 'lowest_altitude';
 
-  // static Future<List<Map<String, dynamic>>> getLandmarks() async {
-  //   String landmarksJson = await rootBundle.loadString('E:/School/Hoofdfase/IATIMD/altitude_tracker/lib/assets/landmarks.json');
-  //   List<dynamic> landmarksList = jsonDecode(landmarksJson);
-  //   return landmarksList.cast<Map<String, dynamic>>();
-  // }
-
-
-  //moved landmarks to list as having them in a json file caused unexpected errors
+  //List of landmarks and locations
   static List<Map<String, dynamic>> landmarks = [
     {"name": "Amsterdam, Netherlands", "altitude": -2},
     {"name": "Venice, Italy", "altitude": 0},
@@ -58,7 +52,13 @@ class AltitudeService {
     {"name": "Mount Everest, Nepal/China", "altitude": 8848}
   ];
 
+  // Method to calculate altitude based on atmospheric pressure
   static int calculateAltitude(double pressure) {
+    // Formula used:
+    // h=44330.0×(1−(P/Po)^0.1903)
+    // h = height in meters
+    // P = atmospheric pressure in hPa
+    // Po = atmospheric pressure at sea level in hPa
     double rawAltitude = 44330.0 * (1.0 - pow((pressure / seaLevelPressure), 0.1903));
     return rawAltitude.round();
   }
@@ -73,30 +73,7 @@ class AltitudeService {
     }
   }
 
-
-  // static Future<String> showLandmark(int approxAltitude) async {
-  //   List<Map<String, dynamic>> landmarks = await getLandmarks();
-  //
-  //   // Sort landmarks by altitude in ascending order
-  //   landmarks.sort((a, b) => a['altitude'].compareTo(b['altitude']));
-  //
-  //   // Find the closest landmark
-  //   Map<String, dynamic>? closestLandmark;
-  //   for (var landmark in landmarks) {
-  //     if (landmark['altitude'] >= approxAltitude) {
-  //       closestLandmark = landmark;
-  //       break;
-  //     }
-  //   }
-  //
-  //   if (closestLandmark != null) {
-  //     return closestLandmark['name'];
-  //   } else {
-  //     return "No landmark found"; // Handle case where no landmark is found
-  //   }
-  // }
-
-  //Method that gets closest landmark and shows it to user
+  //Method to get closest landmark and show it to user
   static String showLandmark(int approxAltitude) {
     Map<String, dynamic> closest = landmarks.first;
     num minDiff = (approxAltitude - closest["altitude"]).abs();
@@ -126,15 +103,12 @@ class AltitudeService {
   static Future<void> updateHighScores(int newAltitude) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // Fetch current high scores
     Map<String, int> highScores = await fetchHighScores();
 
-    // Update highest altitude if the new altitude is higher
     if (newAltitude > highScores['highest']!) {
       await prefs.setInt(_keyHighestAltitude, newAltitude);
     }
 
-    // Update lowest altitude if the new altitude is lower
     if (newAltitude < highScores['lowest']! || highScores['lowest'] == 0) {
       await prefs.setInt(_keyLowestAltitude, newAltitude);
     }

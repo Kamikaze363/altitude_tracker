@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     _initBarometer();
   }
 
+  //Gets pressure from barometer
   void _initBarometer() {
     _streamSubscriptions.add(flutterBarometerEvents.listen((FlutterBarometerEvent event) {
       if (!mounted) return;
@@ -54,6 +55,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     super.dispose();
   }
 
+  // Method that checks if app lifecycle has changed
+  // Prevents crash when app checks portrait/landscape layout and barometer at the same time
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused || state == AppLifecycleState.detached) {
@@ -97,6 +100,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               label: "Achievements"),
         ],
       ),
+
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: Text(
@@ -107,6 +111,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           ),
         ),
       ),
+
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(customPadding),
@@ -120,6 +125,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     );
   }
 
+  //Widget that dictates portrait layout
   Widget buildPortraitView() {
     const double witdhMultiplier = .9;
     return Column(
@@ -134,6 +140,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     );
   }
 
+  //Widget that dictates landscape layout
   Widget buildLandscapeView() {
     const double witdhMultiplier = .45;
       return Column(
@@ -143,38 +150,42 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               altitudeCard(witdhMultiplier),
-              SizedBox(width:ScreenSizes.width(context) * .03 ,),
+              SizedBox(width:ScreenDimensions.width(context) * .03 ,),
               locationsCard(witdhMultiplier)
             ],
           ),
           const SizedBox(height: 40),
-          Text("All Landmarks and Locations:", style: AppStyles.headerStyle(),),
+          Text("All Landmarks and Locations:", style: TextStyles.headerStyle(),),
           buildLocationList()
         ]
       );
   }
 
+  //Widget that shows current approximate altitude
   Widget altitudeCard(double witdhMultiplier){
     return CardWidget(
         titleText: "Approx. Altitude:",
         infoText: _altitude.toString(),
-        cardWidth: ScreenSizes.width(context) * witdhMultiplier,
+        cardWidth: ScreenDimensions.width(context) * witdhMultiplier,
         cardColor: AppColors.primaryColor,
-        titleStyle: AppStyles.labelStyleWhite(),
-        infoStyle: AppStyles.headerStyleWhite()
+        titleStyle: TextStyles.labelStyleWhite(),
+        infoStyle: TextStyles.headerStyleWhite()
     );
   }
 
+  //Widget that shows current closest location
   Widget locationsCard(double witdhMultiplier){
     return CardWidget(
         titleText: "You are at about the \nsame altitude as:",
         infoText: AltitudeService.showLandmark(AltitudeService.calculateAltitude(_pressure)),
-        cardWidth: ScreenSizes.width(context) * witdhMultiplier,
+        cardWidth: ScreenDimensions.width(context) * witdhMultiplier,
         cardColor: AppColors.primaryColor,
-        titleStyle: AppStyles.labelStyleWhite(),
-        infoStyle: AppStyles.labelStyleWhite()
+        titleStyle: TextStyles.labelStyleWhite(),
+        infoStyle: TextStyles.labelStyleWhite()
     );
   }
+
+  //Widget that shows all locations when in landscape mode
   Widget buildLocationList() {
     return SizedBox(
       height: 159, // Adjust the height as needed
@@ -187,9 +198,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             padding: const EdgeInsets.symmetric(horizontal: 8.0), // Adjust horizontal spacing between cards
             child: CardWidget(
               titleText: "${landmark['name']}",
-              titleStyle: AppStyles.labelStyleWhite(), // Adjust styles as needed
+              titleStyle: TextStyles.labelStyleWhite(), // Adjust styles as needed
               infoText: "${landmark['altitude']} meters",
-              infoStyle: AppStyles.labelStyleWhite(), // Adjust styles as needed
+              infoStyle: TextStyles.labelStyleWhite(), // Adjust styles as needed
               cardColor: AppColors.primaryColor,
               cardWidth: MediaQuery.of(context).size.width * 0.3, // Adjust width as needed
             ),

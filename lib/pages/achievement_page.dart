@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 
 class AchievementPage extends StatefulWidget {
-  const AchievementPage({super.key, required this.title});
+  const AchievementPage({super.key});
 
-  final String title;
+  final String title = "Achievements";
 
   @override
   State<AchievementPage> createState() => _AchievementPageState();
@@ -67,7 +67,7 @@ class _AchievementPageState extends State<AchievementPage> {
         backgroundColor: AppColors.primaryColor,
         title: Text(
           widget.title,
-          style: TextStyles.labelStyleWhite(),
+          style: CustomTextStyles.labelStyleWhite(),
         ),
       ),
 
@@ -98,39 +98,39 @@ class _AchievementPageState extends State<AchievementPage> {
 
   //Widget that dictates landscape layout
   Widget buildLandscapeView() {
-    double witdhMultiplier = .45;
+    double witdthMultiplier = .45;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        highScore(witdhMultiplier),
+        highScore(witdthMultiplier),
         SizedBox(width: ScreenDimensions.width(context) * .03 ,),
-        lowScore(witdhMultiplier)
+        lowScore(witdthMultiplier)
       ],
     );
   }
 
   // Widget that displays highscore
-  Widget highScore(double witdhMultiplier){
+  Widget highScore(double witdthMultiplier){
     return   CardWidget(
       titleText: "Highest Achieved Altitude:",
       infoText: "$_highestAltitude meters",
-      cardWidth: ScreenDimensions.width(context) * witdhMultiplier,
+      cardWidth: ScreenDimensions.width(context) * witdthMultiplier,
       cardColor: AppColors.primaryColor,
-      titleStyle: TextStyles.labelStyleWhite(),
-      infoStyle: TextStyles.headerStyleWhite(),
+      titleStyle: CustomTextStyles.labelStyleWhite(),
+      infoStyle: CustomTextStyles.headerStyleWhite(),
     );
   }
 
   // Widget that displays lowscore
-  Widget lowScore(double witdhMultiplier){
+  Widget lowScore(double witdthMultiplier){
     return CardWidget(
       titleText: "Lowest Achieved Altitude:",
       infoText: "$_lowestAltitude meters",
-      cardWidth: ScreenDimensions.width(context) * witdhMultiplier,
+      cardWidth: ScreenDimensions.width(context) * witdthMultiplier,
       cardColor: AppColors.primaryColor,
-      titleStyle: TextStyles.labelStyleWhite(),
-      infoStyle: TextStyles.headerStyleWhite(),
+      titleStyle: CustomTextStyles.labelStyleWhite(),
+      infoStyle: CustomTextStyles.headerStyleWhite(),
     );
   }
 }

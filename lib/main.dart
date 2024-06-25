@@ -2,9 +2,7 @@ import 'package:altitude_tracker/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'globals.dart';
 
-//TODO: Do an integration test
-//TODO: Write documentation / paper
-//TODO: Make demo video / test video
+//TODO: Make demo video
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +21,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
         useMaterial3: true,
       ),
-      home: const HomePage(title: AppTitle.title),
+      home: const HomePage(),
     );
   }
 }

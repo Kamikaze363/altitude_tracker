@@ -5,8 +5,8 @@ import 'dart:async';
 import 'package:flutter_barometer/flutter_barometer.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
-  final String title;
+  const HomePage({super.key});
+  final String title = "Home";
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             ],
           ),
           const SizedBox(height: 40),
-          Text("All Landmarks and Locations:", style: TextStyles.headerStyle(),),
+          Text("All Landmarks and Locations:", style: CustomTextStyles.headerStyle(),),
           buildLocationList()
         ]
       );
@@ -168,8 +168,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         infoText: _altitude.toString(),
         cardWidth: ScreenDimensions.width(context) * witdhMultiplier,
         cardColor: AppColors.primaryColor,
-        titleStyle: TextStyles.labelStyleWhite(),
-        infoStyle: TextStyles.headerStyleWhite()
+        titleStyle: CustomTextStyles.labelStyleWhite(),
+        infoStyle: CustomTextStyles.headerStyleWhite()
     );
   }
 
@@ -180,8 +180,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         infoText: AltitudeService.showLandmark(AltitudeService.calculateAltitude(_pressure)),
         cardWidth: ScreenDimensions.width(context) * witdhMultiplier,
         cardColor: AppColors.primaryColor,
-        titleStyle: TextStyles.labelStyleWhite(),
-        infoStyle: TextStyles.labelStyleWhite()
+        titleStyle: CustomTextStyles.labelStyleWhite(),
+        infoStyle: CustomTextStyles.labelStyleWhite()
     );
   }
 
@@ -198,9 +198,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             padding: const EdgeInsets.symmetric(horizontal: 8.0), // Adjust horizontal spacing between cards
             child: CardWidget(
               titleText: "${landmark['name']}",
-              titleStyle: TextStyles.labelStyleWhite(), // Adjust styles as needed
+              titleStyle: CustomTextStyles.labelStyleWhite(), // Adjust styles as needed
               infoText: "${landmark['altitude']} meters",
-              infoStyle: TextStyles.labelStyleWhite(), // Adjust styles as needed
+              infoStyle: CustomTextStyles.labelStyleWhite(), // Adjust styles as needed
               cardColor: AppColors.primaryColor,
               cardWidth: MediaQuery.of(context).size.width * 0.3, // Adjust width as needed
             ),

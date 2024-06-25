@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 //used for the bottom app bar
 const pages = [
-  HomePage(title: AppTitle.title),
-  AchievementPage(title: AppTitle.title),
+  HomePage(),
+  AchievementPage(),
 ];
 
 int currentPageIndex = 0;
@@ -29,7 +29,7 @@ class AppTitle {
 }
 
 //Custom text styles used in app
-class TextStyles {
+class CustomTextStyles {
   static TextStyle labelStyle() {
     return const TextStyle(
       fontWeight: FontWeight.bold,
@@ -62,7 +62,6 @@ class ScreenDimensions {
 }
 
 // Custom CardWidget used throughout app
-// Source / credit: my IPMEDT4 project (can be found in my GitHub pins)
 class CardWidget extends StatelessWidget {
   final String titleText;
   final String infoText;

@@ -3,18 +3,17 @@ import 'package:altitude_tracker/services/altitude_service.dart';
 import 'package:flutter/material.dart';
 
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key, required this.title});
+class AchievementPage extends StatefulWidget {
+  const AchievementPage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<AchievementPage> createState() => _AchievementPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _AchievementPageState extends State<AchievementPage> {
   final double customPadding = 16.0;
-
   int _highestAltitude = 0;
   int _lowestAltitude = 0;
 
@@ -37,6 +36,31 @@ class _ProfilePageState extends State<ProfilePage> {
     bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => pages[currentPageIndex],
+            ),
+          );
+        },
+        indicatorColor: AppColors.primaryColor,
+        selectedIndex: currentPageIndex,
+        destinations: const <Widget>[
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: "Home"),
+          NavigationDestination(
+            icon: Icon(Icons.emoji_events_outlined),
+            selectedIcon: Icon(Icons.emoji_events),
+            label: "Achievements"),
+        ],
+      ),
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: Text(

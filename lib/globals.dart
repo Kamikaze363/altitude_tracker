@@ -1,5 +1,15 @@
+import 'package:altitude_tracker/pages/home_page.dart';
+import 'package:altitude_tracker/pages/achievement_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+//used for the bottom app bar
+const pages = [
+  HomePage(title: AppTitle.title),
+  AchievementPage(title: AppTitle.title),
+];
+
+int currentPageIndex = 0;
 
 
 class AppColors {
@@ -39,7 +49,6 @@ class AppStyles {
   static TextStyle headerStyleWhite() {
     return const TextStyle(fontSize: 45, color: AppColors.accentColor);
   }
-
 }
 
 class ScreenSizes {
@@ -99,3 +108,4 @@ class CardWidget extends StatelessWidget {
     );
   }
 }
+

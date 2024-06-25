@@ -1,5 +1,4 @@
 import 'package:altitude_tracker/globals.dart';
-import 'package:altitude_tracker/pages/profile_page.dart';
 import 'package:altitude_tracker/services/altitude_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -22,6 +21,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    currentPageIndex = 0;
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _initBarometer();
@@ -72,47 +72,56 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
-
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => pages[currentPageIndex],
+            ),
+          );
+        },
+        indicatorColor: AppColors.primaryColor,
+        selectedIndex: currentPageIndex,
+        destinations: const <Widget>[
+          NavigationDestination(
+              icon: Icon(Icons.home_outlined),
+              selectedIcon: Icon(Icons.home),
+              label: "Home"),
+          NavigationDestination(
+              icon: Icon(Icons.emoji_events_outlined),
+              selectedIcon: Icon(Icons.emoji_events),
+              label: "Achievements"),
+        ],
+      ),
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: Text(
           widget.title,
           style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: AppColors.accentColor
+            fontWeight: FontWeight.bold,
+            color: AppColors.accentColor
           ),
         ),
-        actions: [
-          IconButton(
-              tooltip: "Go to achievements",
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ProfilePage(title: AppTitle.title),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.emoji_events, color: AppColors.accentColor, size: 40,)
-          )
-
-        ],
       ),
       body: SingleChildScrollView(
         child: Container(
-            margin: EdgeInsets.all(customPadding),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return isLandscape ? buildLandscapeView() : buildPortraitView();
-              },
-            )
+          margin: EdgeInsets.all(customPadding),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return isLandscape ? buildLandscapeView() : buildPortraitView();
+            },
+          )
         ),
       ),
     );
   }
 
   Widget buildPortraitView() {
-    double witdhMultiplier = .9;
+    const double witdhMultiplier = .9;
     return Column(
 
       children: [
@@ -126,16 +135,23 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   Widget buildLandscapeView() {
-    double witdhMultiplier = .45;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        altitudeCard(witdhMultiplier),
-        SizedBox(width:ScreenSizes.width(context) * .03 ,),
-        locationsCard(witdhMultiplier)
-      ],
-    );
+    const double witdhMultiplier = .45;
+      return Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              altitudeCard(witdhMultiplier),
+              SizedBox(width:ScreenSizes.width(context) * .03 ,),
+              locationsCard(witdhMultiplier)
+            ],
+          ),
+          const SizedBox(height: 40),
+          Text("All Landmarks and Locations:", style: AppStyles.headerStyle(),),
+          buildLocationList()
+        ]
+      );
   }
 
   Widget altitudeCard(double witdhMultiplier){
@@ -157,6 +173,29 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         cardColor: AppColors.primaryColor,
         titleStyle: AppStyles.labelStyleWhite(),
         infoStyle: AppStyles.labelStyleWhite()
+    );
+  }
+  Widget buildLocationList() {
+    return SizedBox(
+      height: 159, // Adjust the height as needed
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: AltitudeService.landmarks.length,
+        itemBuilder: (context, index) {
+          var landmark = AltitudeService.landmarks[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0), // Adjust horizontal spacing between cards
+            child: CardWidget(
+              titleText: "${landmark['name']}",
+              titleStyle: AppStyles.labelStyleWhite(), // Adjust styles as needed
+              infoText: "${landmark['altitude']} meters",
+              infoStyle: AppStyles.labelStyleWhite(), // Adjust styles as needed
+              cardColor: AppColors.primaryColor,
+              cardWidth: MediaQuery.of(context).size.width * 0.3, // Adjust width as needed
+            ),
+          );
+        },
+      ),
     );
   }
 }

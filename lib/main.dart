@@ -1,9 +1,8 @@
 import 'package:altitude_tracker/pages/home_page.dart';
 import 'package:flutter/material.dart';
-
 import 'globals.dart';
 
-//TODO: Add responsiveness
+//DONE: Add responsiveness
 //TODO: Clean up code
 //TODO: Add login
 //TODO: move locations back to JSON file
